@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowling Alley & Entertainment Center - Home 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎳</text></svg>">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontWeight: { semibold: '500', bold: '600', extrabold: '800', black: '900' }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* === THEME VARIABLES (Bowling Neon/Dark Mode Ready) === */
+        :root {
+            --bg-color: #FFFFFF;         
+            --bg-secondary: #F8FAFC;     
+            --bg-card: #FFFFFF;          
+            --text-main: #0F172A;        
+            --text-muted: #475569;       
+            --accent-color: #E11D48; /* Vibrant Rose/Red for Bowling Theme */    
+            --accent-dark: #BE123C;      
+            --border-color: #E2E8F0;     
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --drawer-bg: rgba(255, 255, 255, 0.98);
+            --menu-hover-bg: rgba(225, 29, 72, 0.08);
+        }
+
+        body.dark-mode {
+            --bg-color: #020617;         
+            --bg-secondary: #0F172A;     
+            --bg-card: #0F172A;
+            --text-main: #F8FAFC;        
+            --text-muted: #94A3B8;
+            --accent-color: #F43F5E;     
+            --accent-dark: #E11D48;      
+            --border-color: #1E293B;
+            --nav-bg: rgba(2, 6, 23, 0.85);
+            --drawer-bg: rgba(2, 6, 23, 0.98);
+            --menu-hover-bg: rgba(244, 63, 94, 0.15);
+        }
+
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+        [dir="rtl"] .dropdown-menu { left: auto; right: 0; transform-origin: top right; }
+        [dir="rtl"] .quote-icon { right: auto !important; left: 2rem !important; }
+        [dir="rtl"] .fa-arrow-right, [dir="rtl"] .fa-chevron-right { transform: scaleX(-1); display: inline-block; }
+
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+
+        /* === NEW REDESIGNED FLOATING PILL NAVBAR === */
+        .navbar {
+            position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); width: 96%; max-width: 1400px; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); padding: 0 1rem; height: 76px; display: flex; align-items: center;
+            border-radius: 9999px; /* Pill Shape */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+        .navbar.scrolled { 
+            top: 0.5rem; height: 68px; width: 98%;
+            background: var(--bg-card); 
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1); 
+        }
+
+        .nav-link {
+            position: relative; padding: 8px 12px; margin: 0 1px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 600;
+            text-transform: capitalize; letter-spacing: 0.2px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            cursor: pointer; border-radius: 9999px; z-index: 1; background: transparent; white-space: nowrap;
+        }
+        @media (min-width: 1440px) {
+            .nav-link { padding: 8px 16px; margin: 0 2px; }
+        }
+        .nav-link:hover, .nav-link.active { background: var(--menu-hover-bg); color: var(--accent-color); }
+
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { position: absolute; top: calc(100% + 5px); left: 0; transform: translateY(15px) scale(0.95); opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; transform-origin: top left; }
+        .dropdown-inner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; min-width: 220px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .dropdown-item { display: block; padding: 12px 16px; border-radius: 8px; color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: capitalize; transition: all 0.2s; text-align: left; white-space: nowrap; }
+        .dropdown-item:hover { background: var(--menu-hover-bg); color: var(--accent-color); padding-left: 20px; }
+        [dir="rtl"] .dropdown-item:hover { padding-left: 16px; padding-right: 20px; }
+
+        .theme-toggle-pill {
+            width: 80px; height: 36px; background: var(--bg-secondary); border-radius: 9999px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 10px; border: 1.5px solid var(--border-color); margin: 0 3px; direction: ltr !important; box-sizing: border-box; flex-shrink: 0;
+        }
+        .theme-toggle-pill i { font-size: 12px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #999; }
+        .theme-toggle-pill .thumb {
+            position: absolute; top: 2px; left: 3px; width: 28px; height: 28px; background: white; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); z-index: 2; border: 1px solid var(--border-color);
+        }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(43px); background: #333; border-color: var(--border-color); }
+
+        .rtl-btn-style {
+            width: 80px; height: 36px; background: var(--bg-secondary); border-radius: 9999px; border: 1.5px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; color: var(--text-main); transition: all 0.3s ease; margin: 0 3px; box-sizing: border-box; flex-shrink: 0;
+        }
+        .rtl-btn-style:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(225, 29, 72, 0.15); }
+
+        /* NEW BUTTON DESIGNS (Rounded Pill & Neon Shadows) */
+        .btn { padding: 14px 32px; font-weight: 700; font-size: 14px; text-transform: capitalize; letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 2px solid transparent; border-radius: 9999px; text-decoration: none; }
+        
+        .btn-solid { background: linear-gradient(135deg, var(--accent-color), var(--accent-dark)); color: #FFFFFF !important; box-shadow: 0 8px 20px -6px rgba(225, 29, 72, 0.5); }
+        .btn-solid:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 25px -4px rgba(225, 29, 72, 0.6); }
+        
+        .btn-outline { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color) !important; background: var(--menu-hover-bg); transform: translateY(-3px) scale(1.02); }
+
+        /* AUTH BUTTONS */
+        .btn-auth { padding: 0; width: 85px; height: 38px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); background: transparent; border: 2px solid var(--text-main); border-radius: 9999px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; box-sizing: border-box; flex-shrink: 0; margin: 0 3px; }
+        body.dark-mode .btn-auth { border-color: var(--border-color); }
+        .btn-auth:hover { border-color: var(--accent-color); color: #fff; background: var(--accent-color); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); }
+
+        /* DRAWER MENU */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+        .fullscreen-menu { position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100dvh; background: var(--drawer-bg); z-index: 1001; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(100%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--border-color); }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid var(--border-color); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        [dir="rtl"] .fullscreen-menu.active { transform: translateX(0); }
+        .mobile-link { display: block; width: 100%; padding: 16px 32px; font-size: 1.1rem; font-weight: 600; text-transform: capitalize; letter-spacing: 0.5px; color: var(--text-main); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid var(--border-color); }
+        .mobile-link:hover { color: var(--accent-color); padding-left: 40px; background: var(--menu-hover-bg); }
+        [dir="rtl"] .mobile-link:hover { padding-left: 32px; padding-right: 40px; }
+
+        /* === CONTENT SECTIONS === */
+        .viewport-section {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5.5rem 0;
+            overflow-x: clip;
+        }
+        @media (max-width: 768px) {
+            .viewport-section {
+                padding: 4rem 0;
+            }
+        }
+
+        /* FOOTER */
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 80px; }
+        footer h4 { color: var(--text-main); font-weight: 600; font-size: 1.1rem; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
+        footer a, footer li, footer span { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.95rem; font-weight: 400; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); background: transparent; }
+        .social-link-circle:hover { background: var(--accent-color); border-color: var(--accent-color); color: #FFFFFF; transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 32px 0; margin-top: 60px; }
+    </style>
+</head>
+<body>
+
+    <!-- === REDESIGNED FLOATING NAVBAR === -->
+    <nav class="navbar" id="main-nav">
+        <div class="w-full flex items-center justify-between px-2">
+            <div class="flex items-center flex-shrink-0 me-4 xl:me-6">
+                <a href="index.html" class="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-wider whitespace-nowrap" style="color: var(--text-main) !important; text-decoration: none;">
+                    <i class="fas fa-bowling-ball" style="color: var(--accent-color);"></i> StrikeZone
+                </a>
+            </div>
+            
+            <div class="hidden xl:flex justify-center items-center flex-1">
+                <div class="dropdown">
+                    <div class="nav-link active">Home <i class="fas fa-chevron-down text-[10px] ms-1 opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] ms-1 opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="user.html" class="dropdown-item">User Dashboard</a>
+                            <a href="admin.html" class="dropdown-item">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hidden xl:flex items-center flex-shrink-0 ms-4 gap-2">
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div>
+                </div>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+                <div class="w-px h-8 bg-[var(--border-color)] mx-1"></div>
+                <a href="login.html" class="btn-auth">Login</a>
+                <a href="register.html" class="btn-auth">Register</a>
+            </div>
+            
+            <div class="xl:hidden flex items-center justify-end gap-4 me-2">
+                <button id="mobile-btn" class="text-2xl text-[var(--text-main)] transition-colors hover:text-[var(--accent-color)]">
+                    <i class="fas fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- === HAMBURGER MENU DRAWER === -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <div class="w-full px-8 py-6 flex justify-between items-center shrink-0 border-b border-[var(--border-color)]">
+            <a href="index.html" class="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-wider whitespace-nowrap" style="color: var(--text-main) !important; text-decoration: none;">
+                <i class="fas fa-bowling-ball" style="color: var(--accent-color);"></i> StrikeZone
+            </a>
+            <button id="close-menu" class="w-10 h-10 rounded-full flex items-center justify-center transition-all text-xl text-[var(--text-main)] hover:bg-[var(--bg-secondary)] hover:text-[var(--accent-color)]"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-4">
+            <a href="index.html" class="mobile-link">Home Page 1</a>
+            <a href="home-2.html" class="mobile-link" style="color: var(--accent-color);">Home Page 2</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link">Services</a>
+            <a href="pricing.html" class="mobile-link">Pricing</a>
+            <a href="blog.html" class="mobile-link">Blog</a>
+            <a href="faq.html" class="mobile-link">FAQ</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+            <div class="px-8 mt-6 mb-2"><span class="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">Portals</span></div>
+            <a href="user.html" class="mobile-link !text-sm text-[var(--text-muted)]">User Dashboard</a>
+            <a href="admin.html" class="mobile-link !text-sm text-[var(--text-muted)]">Admin Dashboard</a>
+        </div>
+        <div class="w-full px-8 py-8 border-t border-[var(--border-color)] flex flex-col gap-6 shrink-0 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Theme</span>
+                    <div id="theme-toggle-mobile" class="theme-toggle-pill"><i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-btn-style">LTR</button>
+                </div>
+            </div>
+            <div class="flex gap-4 w-full">
+                <a href="login.html" class="btn-auth flex-1 !h-[48px] !m-0">Login</a>
+                <a href="register.html" class="btn-auth flex-1 !h-[48px] !m-0">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- === ALTERNATIVE HOME 2 HERO BANNER (Split Bento Editorial Layout) === -->
+    <section class="relative w-full min-h-[100dvh] flex items-center bg-[var(--bg-secondary)] border-b border-[var(--border-color)] overflow-hidden pt-28 pb-16 lg:pt-32 lg:pb-20">
+        <!-- Subtle ambient glow shapes -->
+        <div class="absolute -top-24 -end-24 w-[420px] h-[420px] bg-rose-500/15 rounded-full blur-[110px] pointer-events-none"></div>
+        <div class="absolute -bottom-24 -start-24 w-[420px] h-[420px] bg-purple-500/15 rounded-full blur-[110px] pointer-events-none"></div>
+
+        <div class="relative z-10 w-full max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 xl:gap-14 items-center">
+            <!-- Left Content Column -->
+            <div class="lg:col-span-6 flex flex-col items-start text-start">
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] shadow-sm mb-6">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[var(--accent-color)]"></span>
+                    </span>
+                    <i class="fas fa-star text-yellow-400 text-xs"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[var(--text-main)]">Voted #1 Entertainment Center</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-[4.5rem] font-black leading-[1.06] mb-6 text-[var(--text-main)] tracking-tight">
+                    Eat. Drink. Bowl. <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-purple-500">Repeat.</span>
+                </h1>
+
+                <p class="text-[var(--text-muted)] text-base sm:text-lg md:text-xl leading-relaxed font-medium mb-8 max-w-xl">
+                    Experience the ultimate night out. Premium bowling lanes, state-of-the-art arcade gaming, and a full-service sports bar—all under one roof.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-10">
+                    <a href="contact.html" class="btn btn-solid !py-4 !px-9 text-base !rounded-full shadow-[0_10px_28px_-6px_rgba(225,29,72,0.55)] w-full sm:w-auto">
+                        <i class="fas fa-calendar-alt me-2"></i> Book A Lane
+                    </a>
+                    <a href="services.html" class="btn btn-outline bg-[var(--bg-card)] !py-4 !px-9 text-base !rounded-full shadow-sm w-full sm:w-auto">
+                        <i class="fas fa-ticket-alt me-2 text-[var(--accent-color)]"></i> View Packages
+                    </a>
+                </div>
+
+                <!-- Highlight Stats Strip -->
+                <div class="w-full max-w-xl pt-6 border-t border-[var(--border-color)] grid grid-cols-3 gap-4 sm:gap-6">
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-black text-[var(--text-main)]">32</div>
+                        <p class="text-xs sm:text-sm font-medium text-[var(--text-muted)]">VIP Lanes</p>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-black text-[var(--accent-color)]">100+</div>
+                        <p class="text-xs sm:text-sm font-medium text-[var(--text-muted)]">Arcade Games</p>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-black text-[var(--text-main)]">4.9 <i class="fas fa-star text-yellow-400 text-sm align-middle"></i></div>
+                        <p class="text-xs sm:text-sm font-medium text-[var(--text-muted)]">Guest Rating</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Visual Bento Collage Column -->
+            <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-12 gap-5 items-stretch">
+                <!-- Primary Bowling Lane Photo -->
+                <div class="sm:col-span-7 relative h-[320px] sm:h-[440px] lg:h-[520px] rounded-[2rem] overflow-hidden shadow-2xl border border-[var(--border-color)] group">
+                    <img src="https://images.pexels.com/photos/7429597/pexels-photo-7429597.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="StrikeZone Bowling Alley Lanes" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute top-4 start-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/75 backdrop-blur-md border border-white/15 text-white text-xs font-bold uppercase tracking-wider">
+                        <i class="fas fa-bolt text-yellow-400"></i> Cosmic Nights
+                    </div>
+                    <div class="absolute bottom-5 start-5 end-5 text-white text-start">
+                        <p class="text-xs font-bold uppercase tracking-widest text-rose-400 mb-1">Fri &amp; Sat 9PM–2AM</p>
+                        <h3 class="text-xl font-extrabold leading-snug">Neon Glow Lanes &amp; Live DJ Sets</h3>
+                    </div>
+                </div>
+
+                <!-- Secondary Stacked Bento Column -->
+                <div class="sm:col-span-5 flex flex-col gap-5">
+                    <!-- Second Photo Card -->
+                    <div class="relative h-[220px] sm:flex-1 rounded-[2rem] overflow-hidden shadow-xl border border-[var(--border-color)] group">
+                        <img src="https://images.pexels.com/photos/7429394/pexels-photo-7429394.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Bowling Balls on Return System" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
+                        <div class="absolute bottom-4 start-4 end-4 text-white text-start">
+                            <span class="inline-block px-2.5 py-1 rounded-md bg-rose-600/90 text-[10px] font-bold uppercase tracking-wider mb-1.5">Pro Specs</span>
+                            <p class="text-sm font-bold leading-snug">Oiled Brunswick Synthetic Lanes</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Availability Accent Card -->
+                    <div class="bg-[var(--bg-card)] p-5 sm:p-6 rounded-[2rem] border border-[var(--border-color)] shadow-xl flex flex-col justify-between gap-4 animate-float">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-[var(--accent-color)] flex items-center justify-center text-white text-lg shrink-0 shadow-md">
+                                <i class="fas fa-bowling-ball"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-rose-500/10 text-[var(--accent-color)] text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">Live Status</span>
+                        </div>
+                        <div class="text-start">
+                            <div class="flex justify-between items-center text-xs font-bold text-[var(--text-main)] mb-2">
+                                <span>Tonight's Lanes</span>
+                                <span class="text-[var(--accent-color)]">85% Full</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-[var(--bg-secondary)] overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-[var(--accent-color)] to-purple-500" style="width: 85%"></div>
+                            </div>
+                            <p class="text-xs text-[var(--text-muted)] mt-2.5 font-medium">Skip the wait with instant lane booking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 1: HOW IT WORKS === -->
+    <section class="viewport-section bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 w-full text-center">
+            <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">Simple Process</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-12 tracking-tight">Get Funded in 3 Steps</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                <div class="hidden md:block absolute top-16 left-[16.666%] right-[16.666%] h-0.5 border-t-2 border-dashed border-[var(--border-color)] z-0 pointer-events-none"></div>
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative z-10 hover:-translate-y-2 transition-transform flex flex-col items-center h-full">
+                    <div class="w-16 h-16 bg-[var(--bg-secondary)] rounded-full flex items-center justify-center text-[var(--accent-color)] text-2xl mx-auto mb-6 shadow-inner"><i class="fas fa-laptop-file"></i></div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-3">1. Apply Online</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Complete our secure, 5-minute online application. No hard credit pull required.</p>
+                </div>
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative z-10 hover:-translate-y-2 transition-transform flex flex-col items-center h-full">
+                    <div class="w-16 h-16 bg-[var(--bg-secondary)] rounded-full flex items-center justify-center text-[var(--accent-color)] text-2xl mx-auto mb-6 shadow-inner"><i class="fas fa-handshake"></i></div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-3">2. Review Offers</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Get matched with top lenders and review tailored financing terms and rates.</p>
+                </div>
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative z-10 hover:-translate-y-2 transition-transform flex flex-col items-center h-full">
+                    <div class="w-16 h-16 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg"><i class="fas fa-wallet"></i></div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-3">3. Get Funded</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Sign electronically and access your capital in as little as 24 to 48 hours.</p>
+                </div>
+            </div>
+            <div class="mt-12"><a href="contact.html" class="btn btn-solid"><i class="fas fa-arrow-right me-2"></i> Start Application</a></div>
+        </div>
+    </section>
+
+    <!-- === SECTION 2: LOAN SOLUTIONS === -->
+    <section class="viewport-section bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 w-full text-center">
+            <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">Our Services</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-12 tracking-tight">Flexible Financing Solutions</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border-color)] shadow-sm text-start group hover:shadow-xl transition-all overflow-hidden flex flex-col h-full">
+                    <div class="h-44 w-full overflow-hidden relative shrink-0">
+                        <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=500&q=80" alt="Equipment Loans" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-3 start-4 text-white">
+                            <span class="text-xs font-bold uppercase tracking-wider bg-rose-600/90 backdrop-blur px-2.5 py-1 rounded-md">Heavy & Tech</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-3"><i class="fas fa-tractor"></i></div>
+                            <h3 class="text-lg font-bold text-[var(--text-main)] mb-2">Equipment Loans</h3>
+                            <p class="text-[var(--text-muted)] text-sm mb-4">Finance heavy machinery, trucks, and tech with up to 100% coverage.</p>
+                        </div>
+                        <a href="services.html" class="text-[var(--accent-color)] font-bold text-xs uppercase tracking-wider hover:underline inline-flex items-center">Learn More <i class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border-color)] shadow-sm text-start group hover:shadow-xl transition-all overflow-hidden flex flex-col h-full">
+                    <div class="h-44 w-full overflow-hidden relative shrink-0">
+                        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=500&q=80" alt="Working Capital" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-3 start-4 text-white">
+                            <span class="text-xs font-bold uppercase tracking-wider bg-rose-600/90 backdrop-blur px-2.5 py-1 rounded-md">Cashflow & Ops</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-3"><i class="fas fa-money-bill-trend-up"></i></div>
+                            <h3 class="text-lg font-bold text-[var(--text-main)] mb-2">Working Capital</h3>
+                            <p class="text-[var(--text-muted)] text-sm mb-4">Unsecured lines of credit and term loans to cover everyday expenses.</p>
+                        </div>
+                        <a href="services.html" class="text-[var(--accent-color)] font-bold text-xs uppercase tracking-wider hover:underline inline-flex items-center">Learn More <i class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border-color)] shadow-sm text-start group hover:shadow-xl transition-all overflow-hidden flex flex-col h-full">
+                    <div class="h-44 w-full overflow-hidden relative shrink-0">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=500&q=80" alt="Invoice Factoring" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-3 start-4 text-white">
+                            <span class="text-xs font-bold uppercase tracking-wider bg-rose-600/90 backdrop-blur px-2.5 py-1 rounded-md">Instant Liquidity</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-3"><i class="fas fa-file-invoice-dollar"></i></div>
+                            <h3 class="text-lg font-bold text-[var(--text-main)] mb-2">Invoice Factoring</h3>
+                            <p class="text-[var(--text-muted)] text-sm mb-4">Turn unpaid invoices into immediate cash to improve cash flow.</p>
+                        </div>
+                        <a href="services.html" class="text-[var(--accent-color)] font-bold text-xs uppercase tracking-wider hover:underline inline-flex items-center">Learn More <i class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border-color)] shadow-sm text-start group hover:shadow-xl transition-all overflow-hidden flex flex-col h-full">
+                    <div class="h-44 w-full overflow-hidden relative shrink-0">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=500&q=80" alt="SBA Loans" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-3 start-4 text-white">
+                            <span class="text-xs font-bold uppercase tracking-wider bg-rose-600/90 backdrop-blur px-2.5 py-1 rounded-md">Govt-Backed</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-3"><i class="fas fa-building"></i></div>
+                            <h3 class="text-lg font-bold text-[var(--text-main)] mb-2">SBA Loans</h3>
+                            <p class="text-[var(--text-muted)] text-sm mb-4">Government-backed loans with low rates and long repayment terms.</p>
+                        </div>
+                        <a href="services.html" class="text-[var(--accent-color)] font-bold text-xs uppercase tracking-wider hover:underline inline-flex items-center">Learn More <i class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 3: WHY CHOOSE US === -->
+    <section class="viewport-section bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
+            <div class="relative w-full h-[340px] sm:h-[440px] lg:h-[560px] rounded-3xl overflow-hidden shadow-lg border border-[var(--border-color)]">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1000&q=80" alt="Consultation with Broker" class="w-full h-full object-cover">
+                <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 bg-[var(--bg-card)] backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-[var(--border-color)] shadow-xl" style="background-color: color-mix(in srgb, var(--bg-card) 92%, transparent);">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white text-xl sm:text-2xl flex-shrink-0"><i class="fas fa-award"></i></div>
+                        <div><h4 class="font-bold text-[var(--text-main)] text-base sm:text-lg">Top Rated Broker</h4><p class="text-[var(--text-muted)] text-xs sm:text-sm">Rated 4.9/5 by 2,000+ businesses.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col items-start">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 border-b-2 border-[var(--accent-color)] pb-1">Our Advantage</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 tracking-tight">More Approvals. Better Rates.</h2>
+                <p class="text-[var(--text-muted)] text-lg leading-relaxed mb-8 font-medium">Banks decline 80% of small business loans. We work with a network of 75+ alternative lenders to get you the exact financing you need.</p>
+                <div class="space-y-6 w-full mb-10">
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-check-circle text-[var(--accent-color)] text-xl mt-1 flex-shrink-0"></i>
+                        <div><h4 class="font-bold text-[var(--text-main)]">No Impact on Credit Score</h4><p class="text-[var(--text-muted)] text-sm">Our initial pre-approval process uses a soft pull.</p></div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-check-circle text-[var(--accent-color)] text-xl mt-1 flex-shrink-0"></i>
+                        <div><h4 class="font-bold text-[var(--text-main)]">Dedicated Account Manager</h4><p class="text-[var(--text-muted)] text-sm">A real human expert to guide you from start to finish.</p></div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-check-circle text-[var(--accent-color)] text-xl mt-1 flex-shrink-0"></i>
+                        <div><h4 class="font-bold text-[var(--text-main)]">Funding for Bad Credit</h4><p class="text-[var(--text-muted)] text-sm">We focus on revenue and potential, not just FICO scores.</p></div>
+                    </div>
+                </div>
+                <a href="about.html" class="btn btn-solid"><i class="fas fa-info-circle me-2"></i> About Our Firm</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 4: INDUSTRIES SERVED === -->
+    <section class="viewport-section bg-[#0F172A] text-white border-b border-[var(--border-color)] relative">
+        <div class="max-w-[1440px] mx-auto px-6 w-full text-center relative z-10">
+            <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">Specialized Funding</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-12 tracking-tight">Industries We Serve</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group cursor-pointer border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" alt="Construction Equipment Financing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60 group-hover:opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 text-start">
+                        <i class="fas fa-hard-hat text-2xl text-[var(--accent-color)] mb-2"></i><h3 class="font-bold text-lg text-white">Construction</h3>
+                    </div>
+                </div>
+                <div class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group cursor-pointer border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80" alt="Transportation & Logistics Truck Financing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60 group-hover:opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 text-start">
+                        <i class="fas fa-truck text-2xl text-[var(--accent-color)] mb-2"></i><h3 class="font-bold text-lg text-white">Transportation</h3>
+                    </div>
+                </div>
+                <div class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group cursor-pointer border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80" alt="Manufacturing & Heavy Plant Machinery" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60 group-hover:opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 text-start">
+                        <i class="fas fa-industry text-2xl text-[var(--accent-color)] mb-2"></i><h3 class="font-bold text-lg text-white">Manufacturing</h3>
+                    </div>
+                </div>
+                <div class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group cursor-pointer border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Restaurant & Commercial Kitchen Equipment" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60 group-hover:opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 text-start">
+                        <i class="fas fa-utensils text-2xl text-[var(--accent-color)] mb-2"></i><h3 class="font-bold text-lg text-white">Restaurants</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12"><a href="services.html" class="btn bg-white !text-slate-900 hover:bg-gray-100">See All Industries</a></div>
+        </div>
+    </section>
+
+    <!-- === SECTION 5: TESTIMONIALS === -->
+    <section class="viewport-section bg-[var(--bg-color)] border-b border-[var(--border-color)] relative">
+        <div class="max-w-[1440px] mx-auto px-6 w-full">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">Success Stories</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] tracking-tight">Funded by FinBroker</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-[var(--bg-card)] p-6 sm:p-10 rounded-3xl border border-[var(--border-color)] shadow-md relative flex flex-col justify-between h-full">
+                    <i class="quote-icon fas fa-quote-right text-4xl sm:text-5xl absolute top-6 sm:top-8 end-6 sm:end-8 pointer-events-none" style="color: var(--accent-color); opacity: 0.12;"></i>
+                    <div class="relative z-10">
+                        <div class="flex text-yellow-400 text-sm mb-6 gap-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-[var(--text-muted)] font-medium text-base sm:text-lg leading-relaxed italic mb-8 pe-8">"We needed a new CNC machine quickly to fulfill a massive order. The bank took 3 weeks just to say no. FinBroker got us approved in 24 hours and funded in 48. Incredible service."</p>
+                    </div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-14 h-14 bg-gray-200 rounded-full overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" alt="David M." class="w-full h-full object-cover"></div>
+                        <div><h4 class="font-bold text-[var(--text-main)]">David M.</h4><span class="text-[var(--accent-color)] text-sm font-semibold">Manufacturing CEO</span></div>
+                    </div>
+                </div>
+                <div class="bg-[var(--bg-card)] p-6 sm:p-10 rounded-3xl border border-[var(--border-color)] shadow-md relative flex flex-col justify-between h-full">
+                    <i class="quote-icon fas fa-quote-right text-4xl sm:text-5xl absolute top-6 sm:top-8 end-6 sm:end-8 pointer-events-none" style="color: var(--accent-color); opacity: 0.12;"></i>
+                    <div class="relative z-10">
+                        <div class="flex text-yellow-400 text-sm mb-6 gap-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-[var(--text-muted)] font-medium text-base sm:text-lg leading-relaxed italic mb-8 pe-8">"Expanding my logistics fleet was impossible with traditional lenders due to a slight credit hiccup. My account manager found the perfect equipment financing deal. Highly recommend!"</p>
+                    </div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-14 h-14 bg-gray-200 rounded-full overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" alt="Sarah T." class="w-full h-full object-cover"></div>
+                        <div><h4 class="font-bold text-[var(--text-main)]">Sarah T.</h4><span class="text-[var(--accent-color)] text-sm font-semibold">Logistics Owner</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10"><a href="blog.html" class="text-[var(--accent-color)] font-bold text-sm hover:underline inline-flex items-center gap-1">Read More Reviews <i class="fas fa-arrow-right ms-1"></i></a></div>
+        </div>
+    </section>
+
+    <!-- === SECTION 6: STATS & IMPACT === -->
+    <section class="viewport-section relative bg-[var(--accent-color)] border-b border-[var(--border-color)] overflow-hidden">
+        <div class="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80" alt="Financial District Corporate Architecture" class="w-full h-full object-cover"></div>
+        <div class="absolute inset-0 bg-black/15 pointer-events-none"></div>
+        <div class="max-w-[1440px] mx-auto px-6 w-full relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center text-white">
+            <div class="flex flex-col items-center justify-center p-6 sm:p-8 border border-white/20 rounded-3xl bg-white/10 backdrop-blur-sm">
+                <i class="fas fa-dollar-sign text-4xl mb-4 text-white/90"></i>
+                <h3 class="text-4xl sm:text-5xl font-black mb-2">$500M+</h3><p class="text-sm font-bold uppercase tracking-widest text-rose-100">Capital Funded</p>
+            </div>
+            <div class="flex flex-col items-center justify-center p-6 sm:p-8 border border-white/20 rounded-3xl bg-white/10 backdrop-blur-sm">
+                <i class="fas fa-clock text-4xl mb-4 text-white/90"></i>
+                <h3 class="text-4xl sm:text-5xl font-black mb-2">24 Hrs</h3><p class="text-sm font-bold uppercase tracking-widest text-rose-100">Avg. Funding Time</p>
+            </div>
+            <div class="flex flex-col items-center justify-center p-6 sm:p-8 border border-white/20 rounded-3xl bg-white/10 backdrop-blur-sm">
+                <i class="fas fa-handshake text-4xl mb-4 text-white/90"></i>
+                <h3 class="text-4xl sm:text-5xl font-black mb-2">75+</h3><p class="text-sm font-bold uppercase tracking-widest text-rose-100">Lending Partners</p>
+            </div>
+            <div class="flex flex-col items-center justify-center p-6 sm:p-8 border border-white/20 rounded-3xl bg-white/10 backdrop-blur-sm">
+                <i class="fas fa-star text-4xl mb-4 text-white/90"></i>
+                <h3 class="text-4xl sm:text-5xl font-black mb-2">4.9/5</h3><p class="text-sm font-bold uppercase tracking-widest text-rose-100">Client Satisfaction</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 7: FINAL CTA === -->
+    <section class="viewport-section bg-[var(--bg-color)] border-b border-[var(--border-color)] relative">
+        <div class="max-w-[1100px] mx-auto px-6 w-full">
+            <div class="w-full text-center relative z-10 bg-[var(--bg-secondary)] p-8 sm:p-14 md:p-20 rounded-[2.5rem] md:rounded-[3rem] border border-[var(--border-color)] shadow-xl">
+                <div class="w-20 h-20 rounded-full bg-[var(--accent-color)] mx-auto flex items-center justify-center text-white text-3xl mb-8 shadow-lg">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[var(--text-main)] mb-6 tracking-tight">
+                    Ready to Grow Your Business?
+                </h2>
+                <p class="text-[var(--text-muted)] text-lg md:text-xl mb-10 max-w-2xl mx-auto font-medium">
+                    Find out how much you qualify for today. The application takes minutes, and checking your rate won't impact your credit score.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center w-full">
+                    <a href="contact.html" class="btn btn-solid !py-4 !px-10 shadow-xl hover:scale-105 font-bold w-full sm:w-auto">
+                        Apply For Funding Now
+                    </a>
+                    <a href="tel:+15558888" class="btn btn-outline bg-[var(--bg-card)] !py-4 !px-10 shadow-sm hover:scale-105 font-bold w-full sm:w-auto">
+                        <i class="fas fa-phone me-2"></i> Call (555) 888-FUND
+                    </a>
+                </div>
+                <p class="text-xs text-[var(--text-muted)] mt-6"><i class="fas fa-lock me-1"></i> Secure 256-bit encrypted application.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === FOOTER === -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-10 pt-4">
+                <div class="lg:col-span-4">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-wider whitespace-nowrap" style="color: var(--text-main) !important; text-decoration: none;">
+                            <i class="fas fa-bowling-ball" style="color: var(--accent-color);"></i> StrikeZone
+                        </a>
+                    </div>
+                    <p class="opacity-80 leading-relaxed text-sm font-medium mb-8 max-w-sm" style="color: var(--text-muted);">
+                        Your premier destination for bowling, arcade gaming, dining, and unforgettable entertainment. Bring your friends and let the good times roll.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="social-link-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="lg:col-span-8">
+                    <!-- EXACT FILE REDIRECTS USED FOR FOOTER WITH NEW BOWLING LABELS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+                        <div>
+                            <h4>Quick Links</h4>
+                            <ul class="space-y-4">
+                                <li><a href="login.html">Member Login</a></li>
+                                <li><a href="user.html">Player Dashboard</a></li>
+                                <li><a href="pricing.html">Lane Pricing & Rates</a></li>
+                                <li><a href="blog.html">Event News & Blog</a></li>
+                                <li><a href="faq.html">Facility FAQ</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Our Attractions</h4>
+                            <ul class="space-y-4">
+                                <li><a href="services.html">Bowling Lanes</a></li>
+                                <li><a href="services.html">Arcade & VR</a></li>
+                                <li><a href="services.html">Laser Tag</a></li>
+                                <li><a href="services.html">Sports Bar & Dining</a></li>
+                                <li><a href="services.html">Private Events</a></li>
+                            </ul>
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-1">
+                            <h4>Location</h4>
+                            <ul class="space-y-4 text-[var(--text-muted)] text-sm font-medium">
+                                <li class="flex items-start gap-4"><i class="fas fa-map-marker-alt mt-1 shrink-0" style="color: var(--accent-color);"></i><span>300 Perfect Game Blvd<br>Strike City, SC 12345</span></li>
+                                <li class="flex items-center gap-4"><i class="fas fa-phone shrink-0" style="color: var(--accent-color);"></i><a href="tel:+1555300BOWL" class="break-all hover:text-[var(--accent-color)]">+1 (555) 300-BOWL</a></li>
+                                <li class="flex items-center gap-4"><i class="fas fa-envelope shrink-0" style="color: var(--accent-color);"></i><a href="contact.html" class="break-all hover:text-[var(--accent-color)]">hello@strikezone.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-xs gap-6 font-semibold uppercase tracking-widest">
+                <p style="color: var(--text-muted);">&copy; 2026 StrikeZone Bowling & Entertainment. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
+                    <a href="#">Terms of Service</a><a href="#">Facility Rules</a><a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- === JAVASCRIPT CORE === -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 20) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+        });
+
+        const mobileBtn = document.getElementById('mobile-btn');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const closeMenu = document.getElementById('close-menu');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+
+        function toggleMenu() {
+            fullscreenMenu.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        mobileBtn.onclick = toggleMenu; closeMenu.onclick = toggleMenu; drawerOverlay.onclick = toggleMenu;
+
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile');
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (themeMobile) themeMobile.classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (themeMobile) themeMobile.classList.remove('active');
+            }
+        }
+        updateThemeUI(theme === 'dark');
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        themeDesktop.onclick = toggleTheme;
+        if (themeMobile) themeMobile.onclick = toggleTheme;
+
+        const rtlBtn = document.getElementById('rtl-btn');
+        const rtlMobile = document.getElementById('rtl-toggle-mobile');
+        const dir = localStorage.getItem('dir') || 'ltr';
+
+        function updateRTLUI(currentDir) {
+            const isRTL = currentDir === 'rtl';
+            if (rtlBtn) rtlBtn.innerText = isRTL ? 'RTL' : 'LTR';
+            if (rtlMobile) rtlMobile.innerText = isRTL ? 'RTL' : 'LTR';
+        }
+        if (dir === 'rtl') { document.documentElement.dir = 'rtl'; }
+        updateRTLUI(dir);
+
+        function toggleRTL() {
+            const isRTL = document.documentElement.dir === 'rtl';
+            const newDir = isRTL ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.setItem('dir', newDir);
+            updateRTLUI(newDir);
+        }
+        if (rtlBtn) rtlBtn.onclick = toggleRTL;
+        if (rtlMobile) rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+</html>

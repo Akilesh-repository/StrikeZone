@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | Bowling Alley & Entertainment Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎳</text></svg>">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontWeight: { semibold: '500', bold: '600', extrabold: '800', black: '900' }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* === THEME VARIABLES (Bowling Neon/Dark Mode Ready) === */
+        :root {
+            --bg-color: #FFFFFF;         
+            --bg-secondary: #F8FAFC;     
+            --bg-card: #FFFFFF;          
+            --text-main: #0F172A;        
+            --text-muted: #475569;       
+            --accent-color: #E11D48; /* Vibrant Rose/Red for Bowling Theme */    
+            --accent-dark: #BE123C;      
+            --border-color: #E2E8F0;     
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --drawer-bg: rgba(255, 255, 255, 0.98);
+            --menu-hover-bg: rgba(225, 29, 72, 0.08);
+        }
+
+        body.dark-mode {
+            --bg-color: #020617;         
+            --bg-secondary: #0F172A;     
+            --bg-card: #0F172A;
+            --text-main: #F8FAFC;        
+            --text-muted: #94A3B8;
+            --accent-color: #F43F5E;     
+            --accent-dark: #E11D48;      
+            --border-color: #1E293B;
+            --nav-bg: rgba(2, 6, 23, 0.85);
+            --drawer-bg: rgba(2, 6, 23, 0.98);
+            --menu-hover-bg: rgba(244, 63, 94, 0.15);
+        }
+
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+        [dir="rtl"] .dropdown-menu { left: auto; right: 0; transform-origin: top right; }
+        [dir="rtl"] .quote-icon { right: auto !important; left: 2rem !important; }
+        [dir="rtl"] .fa-arrow-right, [dir="rtl"] .fa-chevron-right { transform: scaleX(-1); display: inline-block; }
+
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+
+        /* === NEW REDESIGNED FLOATING PILL NAVBAR === */
+        .navbar {
+            position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); width: 96%; max-width: 1400px; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); padding: 0 1rem; height: 76px; display: flex; align-items: center;
+            border-radius: 9999px; /* Pill Shape */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+        .navbar.scrolled { 
+            top: 0.5rem; height: 68px; width: 98%;
+            background: var(--bg-card); 
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1); 
+        }
+
+        .nav-link {
+            position: relative; padding: 8px 16px; margin: 0 2px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 600;
+            text-transform: capitalize; letter-spacing: 0.2px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            cursor: pointer; border-radius: 9999px; z-index: 1; background: transparent; white-space: nowrap;
+        }
+        .nav-link:hover, .nav-link.active { background: var(--menu-hover-bg); color: var(--accent-color); }
+
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { position: absolute; top: calc(100% + 5px); left: 0; transform: translateY(15px) scale(0.95); opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; transform-origin: top left; }
+        .dropdown-inner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; min-width: 220px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .dropdown-item { display: block; padding: 12px 16px; border-radius: 8px; color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: capitalize; transition: all 0.2s; text-align: left; white-space: nowrap; }
+        .dropdown-item:hover { background: var(--menu-hover-bg); color: var(--accent-color); padding-left: 20px; }
+        [dir="rtl"] .dropdown-item:hover { padding-left: 16px; padding-right: 20px; }
+
+        .theme-toggle-pill {
+            width: 80px; height: 36px; background: var(--bg-secondary); border-radius: 9999px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 10px; border: 1.5px solid var(--border-color); margin: 0 3px; direction: ltr !important; box-sizing: border-box; flex-shrink: 0;
+        }
+        .theme-toggle-pill i { font-size: 12px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #999; }
+        .theme-toggle-pill .thumb {
+            position: absolute; top: 2px; left: 3px; width: 28px; height: 28px; background: white; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); z-index: 2; border: 1px solid var(--border-color);
+        }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(43px); background: #333; border-color: var(--border-color); }
+
+        .rtl-btn-style {
+            width: 80px; height: 36px; background: var(--bg-secondary); border-radius: 9999px; border: 1.5px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; color: var(--text-main); transition: all 0.3s ease; margin: 0 3px; box-sizing: border-box; flex-shrink: 0;
+        }
+        .rtl-btn-style:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(225, 29, 72, 0.15); }
+
+        /* NEW BUTTON DESIGNS (Rounded Pill & Neon Shadows) */
+        .btn { padding: 14px 32px; font-weight: 700; font-size: 14px; text-transform: capitalize; letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 2px solid transparent; border-radius: 9999px; text-decoration: none; }
+        
+        .btn-solid { background: linear-gradient(135deg, var(--accent-color), var(--accent-dark)); color: #FFFFFF !important; box-shadow: 0 8px 20px -6px rgba(225, 29, 72, 0.5); }
+        .btn-solid:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 25px -4px rgba(225, 29, 72, 0.6); }
+        
+        .btn-outline { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color) !important; background: var(--menu-hover-bg); transform: translateY(-3px) scale(1.02); }
+
+        /* AUTH BUTTONS */
+        .btn-auth { padding: 0; width: 85px; height: 38px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); background: transparent; border: 2px solid var(--text-main); border-radius: 9999px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; box-sizing: border-box; flex-shrink: 0; margin: 0 3px; }
+        body.dark-mode .btn-auth { border-color: var(--border-color); }
+        .btn-auth:hover { border-color: var(--accent-color); color: #fff; background: var(--accent-color); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); }
+
+        /* DRAWER MENU */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+        .fullscreen-menu { position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100dvh; background: var(--drawer-bg); z-index: 1001; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(100%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--border-color); }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid var(--border-color); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        [dir="rtl"] .fullscreen-menu.active { transform: translateX(0); }
+        .mobile-link { display: block; width: 100%; padding: 16px 32px; font-size: 1.1rem; font-weight: 600; text-transform: capitalize; letter-spacing: 0.5px; color: var(--text-main); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid var(--border-color); }
+        .mobile-link:hover { color: var(--accent-color); padding-left: 40px; background: var(--menu-hover-bg); }
+        [dir="rtl"] .mobile-link:hover { padding-left: 32px; padding-right: 40px; }
+
+        /* FOOTER */
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 80px; }
+        footer h4 { color: var(--text-main); font-weight: 600; font-size: 1.1rem; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
+        footer a, footer li, footer span { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.95rem; font-weight: 400; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); background: transparent; }
+        .social-link-circle:hover { background: var(--accent-color); border-color: var(--accent-color); color: #FFFFFF; transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 32px 0; margin-top: 60px; }
+
+        /* UNIQUE SERVICE CARD STYLE */
+        .service-card-modern {
+            position: relative; width: 100%; height: 420px; border-radius: 2rem; overflow: hidden;
+            border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .service-card-modern .card-img {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.7s ease; z-index: 1;
+        }
+        .service-card-modern:hover .card-img { transform: scale(1.1); }
+        .service-card-modern .card-overlay {
+            position: absolute; inset: 0; z-index: 2;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            transition: all 0.4s ease;
+        }
+        .service-card-modern:hover .card-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
+        }
+        .service-card-modern .card-content {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; z-index: 3;
+            transform: translateY(60px); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .service-card-modern:hover .card-content { transform: translateY(0); }
+        .service-card-modern .card-desc {
+            opacity: 0; transition: opacity 0.4s ease; transition-delay: 0.1s;
+        }
+        .service-card-modern:hover .card-desc { opacity: 1; }
+        .service-card-modern .card-btn-container {
+            opacity: 0; transition: opacity 0.4s ease; transition-delay: 0.2s;
+        }
+        .service-card-modern:hover .card-btn-container { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- === REDESIGNED FLOATING NAVBAR === -->
+    <nav class="navbar" id="main-nav">
+        <div class="w-full flex items-center justify-between pl-2 pr-1">
+            <div class="flex items-center flex-shrink-0 mr-4 md:mr-8">
+                <a href="index.html" class="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-wider whitespace-nowrap" style="color: var(--text-main) !important; text-decoration: none;">
+                    <i class="fas fa-bowling-ball" style="color: var(--accent-color);"></i> StrikeZone
+                </a>
+            </div>
+            
+            <div class="hidden xl:flex justify-center items-center flex-1">
+                <div class="dropdown">
+                    <div class="nav-link">Home <i class="fas fa-chevron-down text-[10px] ml-1 opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link active">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] ml-1 opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="user.html" class="dropdown-item">User Dashboard</a>
+                            <a href="admin.html" class="dropdown-item">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hidden xl:flex items-center flex-shrink-0 ml-4 gap-2">
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div>
+                </div>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+                <div class="w-px h-8 bg-[var(--border-color)] mx-2"></div>
+                <a href="login.html" class="btn-auth">Login</a>
+                <a href="register.html" class="btn-auth">Register</a>
+            </div>
+            
+            <div class="xl:hidden flex items-center justify-end gap-4 mr-2">
+                <button id="mobile-btn" class="text-2xl text-[var(--text-main)] transition-colors hover:text-[var(--accent-color)]">
+                    <i class="fas fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- === HAMBURGER MENU DRAWER === -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <div class="w-full px-8 py-6 flex justify-between items-center shrink-0 border-b border-[var(--border-color)]">
+            <a href="index.html" class="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-wider whitespace-nowrap" style="color: var(--text-main) !important; text-decoration: none;">
+                <i class="fas fa-bowling-ball" style="color: var(--accent-color);"></i> StrikeZone
+            </a>
+            <button id="close-menu" class="w-10 h-10 rounded-full flex items-center justify-center transition-all text-xl text-[var(--text-main)] hover:bg-[var(--bg-secondary)] hover:text-[var(--accent-color)]"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-4">
+            <a href="index.html" class="mobile-link">Home Page 1</a>
+            <a href="home-2.html" class="mobile-link">Home Page 2</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link" style="color: var(--accent-color);">Services</a>
+            <a href="pricing.html" class="mobile-link">Pricing</a>
+            <a href="blog.html" class="mobile-link">Blog</a>
+            <a href="faq.html" class="mobile-link">FAQ</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+            <div class="px-8 mt-6 mb-2"><span class="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">Portals</span></div>
+            <a href="user.html" class="mobile-link !text-sm text-[var(--text-muted)]">User Dashboard</a>
+            <a href="admin.html" class="mobile-link !text-sm text-[var(--text-muted)]">Admin Dashboard</a>
+        </div>
+        <div class="w-full px-8 py-8 border-t border-[var(--border-color)] flex flex-col gap-6 shrink-0 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Theme</span>
+                    <div id="theme-toggle-mobile" class="theme-toggle-pill"><i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-btn-style">LTR</button>
+                </div>
+            </div>
+            <div class="flex gap-4 w-full">
+                <a href="login.html" class="btn-auth flex-1 !h-[48px] !m-0">Login</a>
+                <a href="register.html" class="btn-auth flex-1 !h-[48px] !m-0">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- === SERVICES PAGE HERO BANNER === -->
+    <section class="relative w-full min-h-[100dvh] flex items-center justify-center overflow-hidden bg-black pt-20 pb-16">
+        <div class="absolute inset-0 z-0">
+            <!-- Changed Hero Image for Services Page to highlight attractions/laser tag/arcade -->
+            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=2400&q=80" alt="Neon Arcade and Gaming Center" class="w-full h-full object-cover opacity-60">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[var(--bg-color)]"></div>
+        </div>
+
+        <div class="relative z-10 max-w-[1200px] mx-auto px-6 flex flex-col items-center justify-center text-center mt-10">
+            <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 shadow-xl">
+                <span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-white">Endless Entertainment</span>
+            </div>
+            
+            <!-- Changed Content for Services Page -->
+            <h1 class="text-5xl md:text-6xl lg:text-[5.5rem] font-black leading-tight mb-6 text-white tracking-tight drop-shadow-2xl">
+                Choose Your Next <br> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-rose-500" style="filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));">Adventure.</span>
+            </h1>
+            
+            <p class="text-gray-300 text-lg md:text-xl leading-relaxed font-medium mb-12 max-w-3xl mx-auto">
+                From high-tech cosmic bowling and immersive VR arcades to heart-pounding laser tag and VIP corporate events. Explore everything StrikeZone has to offer.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto justify-center">
+                <a href="#attractions" class="btn btn-solid !py-4 !px-10 text-base !rounded-full"><i class="fas fa-ticket-alt mr-2"></i> View Attractions</a>
+                <a href="pricing.html" class="btn btn-outline !py-4 !px-10 text-base !rounded-full !text-white !border-white/30 hover:!bg-white/10 hover:!border-white/60 backdrop-blur-sm"><i class="fas fa-tag mr-2 text-blue-400"></i> See Pricing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 1: 6 UNIQUE SERVICE CARDS GRID === -->
+    <section id="attractions" class="relative w-full min-h-[100dvh] flex flex-col justify-center bg-[var(--bg-color)] py-20 border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 w-full text-center">
+            <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">What We Offer</span>
+            <h2 class="text-4xl md:text-5xl font-black text-[var(--text-main)] mb-16 tracking-tight">Our Premium Services</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Service Card 1 -->
+                <div class="service-card-modern group text-left">
+                    <img src="https://images.pexels.com/photos/7429394/pexels-photo-7429394.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Premium Bowling Lanes" class="card-img">
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <i class="fas fa-bowling-ball text-3xl text-rose-500 mb-3 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-black text-white mb-2 leading-tight">Premium Bowling</h3>
+                        <p class="card-desc text-gray-300 text-sm font-medium mb-6 line-clamp-2">32 state-of-the-art lanes featuring interactive scoring screens, comfortable lounge seating, and VIP lane service.</p>
+                        <div class="card-btn-container">
+                            <a href="services-details.html" class="btn btn-solid w-full text-sm !py-3">Enquire Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="service-card-modern group text-left">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Arcade and VR Gaming" class="card-img">
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <i class="fas fa-gamepad text-3xl text-blue-500 mb-3 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-black text-white mb-2 leading-tight">Arcade & VR</h3>
+                        <p class="card-desc text-gray-300 text-sm font-medium mb-6 line-clamp-2">Step into our massive redemption arcade featuring the newest VR titles and your favorite nostalgic classics.</p>
+                        <div class="card-btn-container">
+                            <a href="services-details.html" class="btn btn-solid w-full text-sm !py-3">Enquire Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="service-card-modern group text-left">
+                    <img src="https://images.unsplash.com/photo-1542567455-cd733f23fbb1?auto=format&fit=crop&w=800&q=80" alt="Neon Laser Tag" class="card-img">
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <i class="fas fa-crosshairs text-3xl text-green-500 mb-3 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-black text-white mb-2 leading-tight">Neon Laser Tag</h3>
+                        <p class="card-desc text-gray-300 text-sm font-medium mb-6 line-clamp-2">Navigate our multi-level, glow-in-the-dark tactical arena. Perfect for parties, team building, and competitive play.</p>
+                        <div class="card-btn-container">
+                            <a href="services-details.html" class="btn btn-solid w-full text-sm !py-3">Enquire Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="service-card-modern group text-left">
+                    <img src="https://images.unsplash.com/photo-1517456793572-1d8efd6dc135?auto=format&fit=crop&w=800&q=80" alt="Sports Bar & Dining" class="card-img">
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <i class="fas fa-hamburger text-3xl text-yellow-500 mb-3 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-black text-white mb-2 leading-tight">Sports Bar & Dining</h3>
+                        <p class="card-desc text-gray-300 text-sm font-medium mb-6 line-clamp-2">Elevated comfort food. Enjoy gourmet pizzas, craft burgers, and local draft beers while watching the big game.</p>
+                        <div class="card-btn-container">
+                            <a href="services-details.html" class="btn btn-solid w-full text-sm !py-3">Enquire Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="service-card-modern group text-left">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80" alt="Private Corporate Events" class="card-img">
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <i class="fas fa-briefcase text-3xl text-purple-500 mb-3 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-black text-white mb-2 leading-tight">Corporate Events</h3>
+                        <p class="card-desc text-gray-300 text-sm font-medium mb-6 line-clamp-2">Rent out our private VIP lounge or the entire facility. Full catering options and event coordination available.</p>
+                        <div class="card-btn-container">
+                            <a href="services-details.html" class="btn btn-solid w-full text-sm !py-3">Enquire Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 6 -->
+                <div class="service-card-modern group text-left">
+                    <img src="https://images.pexels.com/photos/3905848/pexels-photo-3905848.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Birthday Parties" class="card-img">
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <i class="fas fa-birthday-cake text-3xl text-pink-500 mb-3 drop-shadow-md"></i>
+                        <h3 class="text-2xl font-black text-white mb-2 leading-tight">Birthday Parties</h3>
+                        <p class="card-desc text-gray-300 text-sm font-medium mb-6 line-clamp-2">Hassle-free birthday packages for kids and adults. Includes gameplay, food, decorations, and a dedicated host.</p>
+                        <div class="card-btn-container">
+                            <a href="services-details.html" class="btn btn-solid w-full text-sm !py-3">Enquire Now <i class="fas fa-arrow-right ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 2: WHY CHOOSE OUR SERVICES (Features Grid) === -->
+    <section class="relative w-full min-h-[100dvh] flex flex-col justify-center bg-[var(--bg-secondary)] py-20 border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 w-full text-center">
+            <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">The StrikeZone Difference</span>
+            <h2 class="text-4xl md:text-5xl font-black text-[var(--text-main)] mb-16 tracking-tight">Beyond The Basic Alley</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 text-2xl mx-auto mb-6">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">Lane-side App Ordering</h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Never wait in line. Order food and drinks directly from your phone and we'll deliver it straight to your lane.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-16 h-16 rounded-full bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-500 text-2xl mx-auto mb-6">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">Plush VIP Seating</h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Say goodbye to hard plastic chairs. Our lanes feature luxury leather couches and ample table space for dining.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-16 h-16 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500 text-2xl mx-auto mb-6">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">Interactive Scoring</h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Our modernized screens allow you to play custom mini-games, track advanced stats, and take group selfies.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="bg-[var(--bg-card)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-500 text-2xl mx-auto mb-6">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">Live DJ Weekends</h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium">Friday and Saturday nights transform the venue with cosmic lighting, fog machines, and a live DJ spinning tracks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 3: VIP EVENTS CTA === -->
+    <section class="relative w-full min-h-[100dvh] flex flex-col justify-center bg-black py-20 border-b border-gray-900 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20 pointer-events-none"></div>
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1920&q=80" alt="Event Venue" class="w-full h-full object-cover opacity-30 mix-blend-luminosity">
+        </div>
+        
+        <div class="relative z-10 max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+            <div class="text-left">
+                <span class="text-rose-400 text-sm font-bold uppercase tracking-widest mb-4 block">Event Hosting</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">Host Your Next <br>Unforgettable Event.</h2>
+                <p class="text-gray-300 text-lg leading-relaxed mb-8 font-medium">Looking for a venue that isn't a boring banquet hall? StrikeZone offers private room rentals, full-facility buyouts, customized catering menus, and dedicated event coordinators to ensure your party is a massive hit.</p>
+                <ul class="text-left space-y-4 mb-10 text-gray-200 font-medium">
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-rose-500 text-xl"></i> Corporate Holiday Parties & Team Building</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-rose-500 text-xl"></i> Milestone Birthdays & Anniversaries</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-rose-500 text-xl"></i> School Field Trips & Youth Groups</li>
+                </ul>
+                <a href="contact.html" class="btn btn-solid !py-4 !px-10 text-base !rounded-full shadow-[0_0_20px_rgba(225,29,72,0.4)]">Download Event Brochure</a>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 h-full">
+                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=600&q=80" alt="Corporate Event" class="w-full h-48 md:h-64 object-cover rounded-3xl border border-gray-800 shadow-2xl">
+                <img src="https://images.pexels.com/photos/3905848/pexels-photo-3905848.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Birthday Party" class="w-full h-48 md:h-64 object-cover rounded-3xl border border-gray-800 shadow-2xl mt-8">
+            </div>
+        </div>
+    </section>
+
+    <!-- === SECTION 4: FREQUENTLY ASKED QUESTIONS === -->
+    <section class="relative w-full min-h-[100dvh] flex flex-col justify-center bg-[var(--bg-color)] py-20 border-b border-[var(--border-color)]">
+        <div class="max-w-[1000px] mx-auto px-6 w-full">
+            <div class="text-center mb-16">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-widest mb-3 block">Got Questions?</span>
+                <h2 class="text-4xl md:text-5xl font-black text-[var(--text-main)] tracking-tight">Services FAQ</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl p-6 hover:shadow-md transition-shadow">
+                    <h4 class="text-lg font-bold text-[var(--text-main)] mb-2 flex justify-between items-center cursor-pointer">Do I need to reserve a lane in advance? <i class="fas fa-plus text-[var(--accent-color)] text-sm"></i></h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium mt-2 leading-relaxed">While walk-ins are always welcome, we highly recommend reserving a lane online in advance, especially on Friday nights, weekends, and holidays when we frequently sell out.</p>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl p-6 hover:shadow-md transition-shadow">
+                    <h4 class="text-lg font-bold text-[var(--text-main)] mb-2 flex justify-between items-center cursor-pointer">Can I bring outside food or cake for a party? <i class="fas fa-plus text-[var(--accent-color)] text-sm"></i></h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium mt-2 leading-relaxed">Outside food and drinks are strictly prohibited due to health and safety regulations. However, if you book an official Birthday Party package, you are allowed to bring in a store-bought cake or cupcakes.</p>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl p-6 hover:shadow-md transition-shadow">
+                    <h4 class="text-lg font-bold text-[var(--text-main)] mb-2 flex justify-between items-center cursor-pointer">Are bowling shoes required? <i class="fas fa-plus text-[var(--accent-color)] text-sm"></i></h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium mt-2 leading-relaxed">Yes, specific bowling shoes are required to protect our lane approaches and ensure your safety. You can bring your own approved bowling shoes, or rent a pair from us at the front desk.</p>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl p-6 hover:shadow-md transition-shadow">
+                    <h4 class="text-lg font-bold text-[var(--text-main)] mb-2 flex justify-between items-center cursor-pointer">What is the age limit for Laser Tag? <i class="fas fa-plus text-[var(--accent-color)] text-sm"></i></h4>
+                    <p class="text-[var(--text-muted)] text-sm font-medium mt-2 leading-relaxed">For safety reasons and to comfortably wear the vest equipment, all laser tag players must be at least 7 years old and 48 inches tall. Closed-toe shoes are also required in the arena.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="faq.html" class="btn btn-outline !py-3 !px-8">View All FAQs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- === FOOTER === -->
+    <footer class="relative z-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-10 pt-4">
+                <div class="lg:col-span-4">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-wider whitespace-nowrap" style="color: var(--text-main) !important; text-decoration: none;">
+                            <i class="fas fa-bowling-ball" style="color: var(--accent-color);"></i> StrikeZone
+                        </a>
+                    </div>
+                    <p class="opacity-80 leading-relaxed text-sm font-medium mb-8 max-w-sm" style="color: var(--text-muted);">
+                        Your premier destination for bowling, arcade gaming, dining, and unforgettable entertainment. Bring your friends and let the good times roll.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="social-link-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="lg:col-span-8">
+                    <!-- EXACT FILE REDIRECTS USED FOR FOOTER WITH NEW BOWLING LABELS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+                        <div>
+                            <h4>Quick Links</h4>
+                            <ul class="space-y-4">
+                                <li><a href="login.html">Member Login</a></li>
+                                <li><a href="user.html">Player Dashboard</a></li>
+                                <li><a href="pricing.html">Lane Pricing & Rates</a></li>
+                                <li><a href="blog.html">Event News & Blog</a></li>
+                                <li><a href="faq.html">Facility FAQ</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Our Attractions</h4>
+                            <ul class="space-y-4">
+                                <li><a href="services.html">Bowling Lanes</a></li>
+                                <li><a href="services.html">Arcade & VR</a></li>
+                                <li><a href="services.html">Laser Tag</a></li>
+                                <li><a href="services.html">Sports Bar & Dining</a></li>
+                                <li><a href="services.html">Private Events</a></li>
+                            </ul>
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-1">
+                            <h4>Location</h4>
+                            <ul class="space-y-4 text-[var(--text-muted)] text-sm font-medium">
+                                <li class="flex items-start gap-4"><i class="fas fa-map-marker-alt mt-1 shrink-0" style="color: var(--accent-color);"></i><span>300 Perfect Game Blvd<br>Strike City, SC 12345</span></li>
+                                <li class="flex items-center gap-4"><i class="fas fa-phone shrink-0" style="color: var(--accent-color);"></i><a href="tel:+1555300BOWL" class="break-all hover:text-[var(--accent-color)]">+1 (555) 300-BOWL</a></li>
+                                <li class="flex items-center gap-4"><i class="fas fa-envelope shrink-0" style="color: var(--accent-color);"></i><a href="contact.html" class="break-all hover:text-[var(--accent-color)]">hello@strikezone.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-xs gap-6 font-semibold uppercase tracking-widest">
+                <p style="color: var(--text-muted);">&copy; 2026 StrikeZone Bowling & Entertainment. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
+                    <a href="#">Terms of Service</a><a href="#">Facility Rules</a><a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- === JAVASCRIPT CORE === -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 20) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+        });
+
+        const mobileBtn = document.getElementById('mobile-btn');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const closeMenu = document.getElementById('close-menu');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+
+        function toggleMenu() {
+            fullscreenMenu.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        mobileBtn.onclick = toggleMenu; closeMenu.onclick = toggleMenu; drawerOverlay.onclick = toggleMenu;
+
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile');
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (themeMobile) themeMobile.classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (themeMobile) themeMobile.classList.remove('active');
+            }
+        }
+        updateThemeUI(theme === 'dark');
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        themeDesktop.onclick = toggleTheme;
+        if (themeMobile) themeMobile.onclick = toggleTheme;
+
+        const rtlBtn = document.getElementById('rtl-btn');
+        const rtlMobile = document.getElementById('rtl-toggle-mobile');
+        const dir = localStorage.getItem('dir') || 'ltr';
+
+        function updateRTLUI(currentDir) {
+            const isRTL = currentDir === 'rtl';
+            if (rtlBtn) rtlBtn.innerText = isRTL ? 'RTL' : 'LTR';
+            if (rtlMobile) rtlMobile.innerText = isRTL ? 'RTL' : 'LTR';
+        }
+        if (dir === 'rtl') { document.documentElement.dir = 'rtl'; }
+        updateRTLUI(dir);
+
+        function toggleRTL() {
+            const isRTL = document.documentElement.dir === 'rtl';
+            const newDir = isRTL ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.setItem('dir', newDir);
+            updateRTLUI(newDir);
+        }
+        if (rtlBtn) rtlBtn.onclick = toggleRTL;
+        if (rtlMobile) rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+</html>
